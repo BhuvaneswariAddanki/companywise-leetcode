@@ -71,7 +71,7 @@ public class WordBreak {
     }
 
     public  boolean wordBreak2(String s, List<String> dictionary) {
-        // create a dp table to store results of subproblems
+        // create a dp table to store results of sub problems
         // value of dp[i] will be true if string s can be segmented
         // into dictionary words from 0 to i.
         boolean[] dp = new boolean[s.length() + 1];

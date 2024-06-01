@@ -1,6 +1,7 @@
 package com.example.companywise.leetcode.microsoft.hard;
 
-import com.example.companywise.leetcode.microsoft.ListNode;
+import java.util.Collections;
+import java.util.PriorityQueue;
 
 /**
  * The median is the middle value in an ordered integer list. If the size of the list is even, there is no middle value, and the median is the mean of the two middle values.
@@ -61,40 +62,29 @@ public class FindMedianFromDataStream {
 
     }
 
-    private ListNode listNode;
-    private int size = 0;
+    PriorityQueue<Integer> minHeap;
+    PriorityQueue<Integer> maxHeap;
 
     public FindMedianFromDataStream() {
-
+        minHeap = new PriorityQueue<>();
+        maxHeap = new PriorityQueue<>(Collections.reverseOrder());
     }
 
     public void addNum(int num) {
-        ListNode node = new ListNode(num);
-        node.next = listNode;
-        listNode = node;
-        size++;
+        maxHeap.offer(num);
+        minHeap.offer(maxHeap.poll());
+        if (maxHeap.size() < minHeap.size()) {
+            maxHeap.offer(minHeap.poll());
+        }
     }
 
+
     public double findMedian() {
-        if (size == 0) {
-            return 0.0;
-        } else if (size == 1) {
-            return listNode.val;
-        } else if (size == 2) {
-            return (listNode.val + listNode.next.val) / 2.0;
+
+        if (minHeap.size() == maxHeap.size()) {
+            return (minHeap.peek() + maxHeap.peek()) / 2.0;
         }
-        ListNode first = listNode;
-        ListNode second = listNode;
-        ListNode prev = null;
-        while (second != null && second.next != null) {
-            prev = first;
-            first = first.next;
-            second = second.next.next;
-        }
-        if (size % 2 == 0) {
-            return (prev.val + first.val) / 2.0;
-        } else {
-            return first.val;
-        }
+        return maxHeap.peek();
+
     }
 }

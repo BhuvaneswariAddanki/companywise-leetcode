@@ -29,8 +29,24 @@ package com.example.companywise.leetcode.microsoft.hard;
 public class TrappingRainWater {
 
     public int trap(int[] height) {
-
-        //TODO
-        return -1;
+        int n = height.length;
+        int leftMax = 0;
+        int rightMax = 0;
+        int trappedArea = 0;
+        int left = 0, right = n - 1;
+        while (left < right) {
+            if (height[left] < height[right]) {
+                if (leftMax <= height[left]) {
+                    leftMax = height[left];
+                }
+                trappedArea += leftMax - height[left++];
+            } else {
+                if (rightMax <= height[right]) {
+                    rightMax = height[right];
+                }
+                trappedArea += rightMax - height[right--];
+            }
+        }
+        return trappedArea;
     }
 }
